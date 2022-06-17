@@ -1,0 +1,20 @@
+.card {
+  background-color: #01050c;
+  color: aliceblue;
+}
+
+.card-inner {
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  color: aliceblue;
+}
+
+.visible {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  visibility: visible;
+}
