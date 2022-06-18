@@ -1,6 +1,17 @@
 .card {
   background-color: #01050c;
-  color: aliceblue;
+  color: white;
+}
+
+.image {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.3s;
+  &:hover {
+    opacity: 1;
+    transform: translate(-2%, -2%);
+    box-shadow: 2px 2px 10px 2px white;
+  }
 }
 
 .card-inner {
@@ -9,12 +20,9 @@
 
 .title {
   text-align: center;
-  color: aliceblue;
+  color: white;
 }
 
-.visible {
-  position: fixed;
-  bottom: 15px;
-  right: 15px;
-  visibility: visible;
+.no__results {
+  color: white;
 }

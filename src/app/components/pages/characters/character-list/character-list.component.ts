@@ -1,8 +1,8 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Params, Router} from '@angular/router';
 import { Character, Info } from 'src/app/interface/character';
 import { RickAndMortyService } from 'src/app/service/rick-and-morty.service';
-import { take } from 'rxjs/operators';
-import { DOCUMENT } from '@angular/common';
+import { take, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-characters',
@@ -11,55 +11,41 @@ import { DOCUMENT } from '@angular/common';
 })
 export class CharactersComponent implements OnInit {
   characters: Character[] = [];
-  info: Info | undefined
+  info: Info | undefined;
 
-  showButton = false;
-  private page = 1;
-  private hideScrollHeight = 200;
-  private showScrollHeight = 500;
+  private query: string | undefined;
 
   constructor(
     private characterService: RickAndMortyService,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.onURLChange();
+  }
 
   ngOnInit(): void {
-    this.getCharactersFromService();
+    this.getCharactersByQuery();
   }
 
-  @HostListener('window:scroll', [])
-  onWindowScroll(): void {
-    const yOffSet = window.pageYOffset;
-    if (
-      (yOffSet ||
-        this.document.documentElement.scrollTop ||
-        this.document.body.scrollTop) > this.showScrollHeight
-    ) {
-      this.showButton = true;
-    } else if (
-      this.showButton &&
-      (yOffSet ||
-        this.document.documentElement.scrollTop ||
-        this.document.body.scrollTop) < this.hideScrollHeight
-    ) {
-      this.showButton = false;
-    }
+  private onURLChange(): void {
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+      this.characters = [];
+      this.getCharactersByQuery()
+    })
   }
 
-  onScrollDown(): void {
-    if (this.info?.next) {
-      this.page++;
-      this.getCharactersFromService();
-    }
-  }
-
-  onScrollTop(): void {
-    this.document.documentElement.scrollTop = 0;
+  private getCharactersByQuery(): void {
+    this.route.queryParams
+      .pipe(take(1))
+      .subscribe((params: Params) => {
+        this.query = params['name'];
+        this.getCharactersFromService();
+      });
   }
 
   private getCharactersFromService(): void {
     this.characterService
-      .getCharacters(this.page)
+      .getCharacters(this.query)
       .pipe(take(1))
       .subscribe((res) => {
         if (res?.results?.length) {
@@ -72,4 +58,3 @@ export class CharactersComponent implements OnInit {
       });
   }
 }
-

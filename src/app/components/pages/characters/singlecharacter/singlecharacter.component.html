@@ -1,0 +1,37 @@
+<div *ngIf="character$ | async as character" class="row justify-content-center">
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="card bg-success">
+      <div class="image">
+        <img
+          [src]="character.image"
+          [alt]="character.name"
+          class="card-img-top"
+        />
+      </div>
+      <div class="info">
+        <button [routerLink]="'/characters/' + prev" class="btn btn-danger">prev</button>
+        <div class="card-inner">
+          <div class="header">
+            <h2>{{ character.name | slice: 0:15 }}</h2>
+            <p *ngIf="character.status !== 'unknown'">
+              status: {{ character.status }}
+            </p>
+            <p *ngIf="character.status === 'unknown'">status is unknown</p>
+            <p *ngIf="character.status !== 'unknown'">
+              species: {{ character.species }}
+            </p>
+            <p *ngIf="character.status === 'unknown'">species are unknown</p>
+            <p *ngIf="character.type !== ''">type: {{ character.type }}</p>
+            <p *ngIf="character.type === ''">type is unknown</p>
+            <p *ngIf="character.gender !== 'unknown'">
+              gender: {{ character.gender }}
+            </p>
+            <p *ngIf="character.gender === 'unknown'">gender is unknown</p>
+            <p>created: {{ character.created | date }}</p>
+          </div>
+        </div>
+        <button [routerLink]="'/characters/' + next" class="btn btn-danger">next</button>
+      </div>
+    </div>
+  </div>
+</div>

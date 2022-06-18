@@ -1,0 +1,26 @@
+<div class="row mt-3">
+  <app-location-search></app-location-search>
+  <div *ngFor="let location of locations" class="col-xs-12 col-sm-6 col-md-4">
+    <div class="card">
+      <h2>{{ location.name }}</h2>
+      <div class="card-inner">
+        <div class="header">
+          <p>
+            dimension: {{ location.dimension }}
+          </p>
+          <p>
+            residents: {{ location.residents.length }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div
+      *ngIf="locations.length <= 0"
+      class="col-xs-12 col-sm-12 col-md-12 mt-5"
+    >
+      <span class="no__results">No results...</span>
+    </div>
+  </div>
+</div>
